@@ -28,6 +28,12 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenRootTypes {
+  Post: { // root type
+    body?: string | null; // String
+    id?: number | null; // Int
+    published?: boolean | null; // Boolean
+    title?: string | null; // String
+  }
   Query: {};
 }
 
@@ -40,14 +46,26 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 }
 
 export interface NexusGenFieldTypes {
+  Post: { // field return type
+    body: string | null; // String
+    id: number | null; // Int
+    published: boolean | null; // Boolean
+    title: string | null; // String
+  }
   Query: { // field return type
-    ok: boolean; // Boolean!
+    drafts: NexusGenRootTypes['Post'][]; // [Post!]!
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  Post: { // field return type name
+    body: 'String'
+    id: 'Int'
+    published: 'Boolean'
+    title: 'String'
+  }
   Query: { // field return type name
-    ok: 'Boolean'
+    drafts: 'Post'
   }
 }
 
@@ -59,7 +77,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Query";
+export type NexusGenObjectNames = "Post" | "Query";
 
 export type NexusGenInputNames = never;
 
