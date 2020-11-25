@@ -17,8 +17,8 @@ export const PostQuery = extendType({
       nullable: false,
       type: 'Post',
       list: true,
-      resolve() {
-        return [{ id: 1, title: 'Nexus', body: '...', published: false }];
+      resolve(_root, _args, ctx) {
+        return ctx.db.posts.filter((p) => p.published === false);
       },
     });
   },
