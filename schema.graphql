@@ -4,6 +4,7 @@
 
 type Mutation {
   createDraft(body: String!, title: String!): Post!
+  publish(draftId: Int!): Post
 }
 
 type Post {
@@ -15,4 +16,5 @@ type Post {
 
 type Query {
   drafts: [Post!]!
+  posts: [Post]
 }
