@@ -1,6 +1,6 @@
-import { makeSchema } from '@nexus/schema';
-import { join } from 'path';
-import * as typeDefs from './graphql';
+import { makeSchema } from '@nexus/schema'
+import { join } from 'path'
+import * as typeDefs from './graphql'
 
 export const schema = makeSchema({
   types: typeDefs,
@@ -17,4 +17,4 @@ export const schema = makeSchema({
     ],
     contextType: 'ContextModule.Context',
   },
-});
+})
