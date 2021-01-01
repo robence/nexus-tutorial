@@ -1,4 +1,4 @@
-import { objectType, extendType, stringArg, intArg } from '@nexus/schema'
+import { objectType, extendType, stringArg, intArg, nonNull } from 'nexus'
 
 export const Post = objectType({
   name: 'Post',
@@ -13,10 +13,8 @@ export const Post = objectType({
 export const PostQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.field('drafts', {
-      nullable: false,
+    t.nonNull.list.nonNull.field('drafts', {
       type: 'Post',
-      list: true,
       resolve(_root, _args, ctx) {
         return ctx.db.posts.filter((p) => p.published === false)
       },
@@ -33,12 +31,11 @@ export const PostQuery = extendType({
 export const PostMutation = extendType({
   type: 'Mutation',
   definition(t) {
-    t.field('createDraft', {
-      nullable: false,
+    t.nonNull.field('createDraft', {
       type: 'Post',
       args: {
-        title: stringArg({ nullable: false }),
-        body: stringArg({ nullable: false }),
+        title: nonNull(stringArg()),
+        body: nonNull(stringArg()),
       },
       resolve(_root, args, ctx) {
         const draft = {
@@ -54,7 +51,7 @@ export const PostMutation = extendType({
       t.field('publish', {
         type: 'Post',
         args: {
-          draftId: intArg({ nullable: false }),
+          draftId: nonNull(intArg()),
         },
         resolve(_root, args, ctx) {
           let draftToPublish = ctx.db.posts.find((p) => p.id === args.draftId)
