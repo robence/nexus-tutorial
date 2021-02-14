@@ -16,13 +16,13 @@ export const PostQuery = extendType({
     t.nonNull.list.nonNull.field('drafts', {
       type: 'Post',
       resolve(_root, _args, ctx) {
-        return ctx.db.posts.filter((p) => p.published === false)
+        return ctx.db.post.findMany({ where: { published: false } })
       },
     })
     t.list.field('posts', {
       type: 'Post',
       resolve(_root, _args, ctx) {
-        return ctx.db.posts.filter((p) => p.published === true)
+        return ctx.db.post.findMany({ where: { published: true } })
       },
     })
   },
@@ -39,13 +39,11 @@ export const PostMutation = extendType({
       },
       resolve(_root, args, ctx) {
         const draft = {
-          id: ctx.db.posts.length + 1,
           title: args.title,
           body: args.body,
           published: false,
         }
-        ctx.db.posts.push(draft)
-        return draft
+        return ctx.db.post.create({ data: draft })
       },
     }),
       t.field('publish', {
@@ -54,15 +52,12 @@ export const PostMutation = extendType({
           draftId: nonNull(intArg()),
         },
         resolve(_root, args, ctx) {
-          let draftToPublish = ctx.db.posts.find((p) => p.id === args.draftId)
-
-          if (!draftToPublish) {
-            throw new Error('Could not find draft with id ' + args.draftId)
-          }
-
-          draftToPublish.published = true
-
-          return draftToPublish
+          return ctx.db.post.update({
+            where: { id: args.draftId },
+            data: {
+              published: true,
+            },
+          })
         },
       })
   },
