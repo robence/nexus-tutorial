@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --transpile-only --no-notify api/app.ts",
     "build": "tsc",
-    "test": "npm run generate && jest",
+    "test": "npm run generate && jest --detectOpenHandles",
     "generate": "ts-node --transpile-only api/schema"
   },
   "keywords": [],
